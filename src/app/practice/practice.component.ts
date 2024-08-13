@@ -3,6 +3,7 @@ import { Value, ValuesService } from '../values.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { CollectionDropdownService } from '../collection-dropdown/collection-dropdown-service';
 
 @Component({
   selector: 'app-practice',
@@ -27,7 +28,7 @@ export class PracticeComponent {
 
   @ViewChild('inputField') inputField!: ElementRef;
 
-  constructor(public valuesService: ValuesService, private renderer: Renderer2) {
+  constructor(public valuesService: ValuesService, private renderer: Renderer2, public collectionDropdownService: CollectionDropdownService) {
     if (valuesService.selectedCollection.values.length > 0) {
       this.nextValue();
     }
@@ -56,9 +57,11 @@ export class PracticeComponent {
 
   @HostListener('document:keydown', ['$event'])
   focusInput(event:KeyboardEvent):void {
-    if (event.key.length !== 1 || ((event.key < 'a' || event.key > 'z') && (event.key < 'A' || event.key > 'Z'))) {
+    if (this.collectionDropdownService.isEditingCollectionName)
+      return
+
+    if (event.key.length !== 1 || ((event.key < 'a' || event.key > 'z') && (event.key < 'A' || event.key > 'Z')))
       return;
-    }
 
     this.inputField.nativeElement.focus();
   }
