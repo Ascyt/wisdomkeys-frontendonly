@@ -279,3 +279,18 @@ input[type="file"] {
 .text-bold {
     font-weight: bold;
 }
+
+.credits {
+    color: var(--front-low);
+    font-size: small;
+    font-style: italic;
+
+    a {
+        color: var(--front-low);
+        transition: 0.3s;
+    }
+    a:hover {
+        color: var(--front-mid);
+        transition: 0.2s;
+    }
+}

@@ -11,5 +11,8 @@ export const routes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: 'initialize', component: InitializeComponent},
     {path: 'practice', component: PracticeComponent},
-    {path: '**', component: NotFoundComponent}
+    {path: 'license', component: RedirectingComponent, canActivate: [RedirectGuard], data: {externalUrl: 'https://github.com/Ascyt/wisdomkeys-frontendonly/blob/main/LICENSE'}},
+    {path: 'source', component: RedirectingComponent, canActivate: [RedirectGuard], data: {externalUrl: 'https://github.com/Ascyt/wisdomkeys-frontendonly'}},
+    {path: 'src', redirectTo: 'source'},
+    {path: '**', component: NotFoundComponent},
 ];
