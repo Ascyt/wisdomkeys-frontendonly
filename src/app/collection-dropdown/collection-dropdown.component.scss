@@ -1,0 +1,34 @@
+
+.dropdown-menu {
+    background-color: var(--back-high); /* Change this to your desired background color */
+}
+
+.dropdown-item {
+    background-color: var(--back-high); /* Change this to your desired background color */
+    color: var(--front-high);
+
+    transition: 0.3s;
+
+    &:hover {
+        background-color: var(--link-hover); /* Change this to your desired hover background color */
+        transition: 0.2s;
+    }
+}
+
+.dropdown-item.active {
+    background-color: var(--link);
+    color: var(--front);
+}
+
+.dropdown-item-addnew {
+    font-style: italic;
+
+    &::before {
+        content: "+";
+        margin-right: 0.5em;
+    }
+}
+
+.margin-right {
+    margin-right: 0.25em;
+}

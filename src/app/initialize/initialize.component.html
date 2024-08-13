@@ -1,0 +1,33 @@
+<table class="table mb-0">
+    <tbody>
+        <tr *ngFor="let value of valuesService.selectedCollection.values; let i = index;">
+            <app-value-input #valueInput [value]="value" (focusPrevious)="focusElement(i - 1)" (focusNext)="focusElement(i + 1)" (greyedOutDisabled)="addValue()" [isGreyedOut]="i === this.valuesService.selectedCollection.values.length - 1"></app-value-input>
+        </tr>   
+    </tbody>
+</table>
+
+<ngb-alert *ngIf="showNotEnoughValuesAlert" type="danger" (closed)="showNotEnoughValuesAlert = false">At least two items are needed to start the sort</ngb-alert>
+
+<h4 class="mt-2">JSON</h4>
+<div class="json-tools">
+    <button class="btn btn-outline-secondary" (click)="downloadJson()">Download</button>
+    <div class="m-1"></div>
+
+    <label for="json-upload" class="file-input">
+        Upload
+    </label>
+    <input type="file" id="json-upload" (change)="uploadJson($event)" accept=".json">
+</div>
+
+<h4 class="mt-3">Hotkeys</h4>
+<ul class="hotkeys">
+    <li><span class="key">Home</span>: <span class="description">Focus first item</span></li>
+    <li><span class="key">End</span>: <span class="description">Focus last item</span></li>
+    <li><span class="key">Up</span>: <span class="description">Focus item above</span></li>
+    <li><span class="key">Down</span>: <span class="description">Focus item below</span></li>
+    <li><span class="key">Backspace</span>: <span class="description">Delete item if empty</span></li>
+    <li><span class="key">Enter</span>: <span class="description">Add new item</span></li>
+    <li><span class="key">Shift</span> + <span class="key">Enter</span>: <span class="description">Delete last item</span></li>
+    <li><span class="key">Ctrl</span> + <span class="key">S</span>: <span class="description">Download JSON</span></li>
+    <li><span class="key">Ctrl</span> + <span class="key">O</span>: <span class="description">Upload JSON</span></li>
+</ul>

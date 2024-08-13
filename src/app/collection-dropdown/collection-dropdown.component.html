@@ -1,0 +1,52 @@
+<div class="d-flex align-items-center">
+    <!-- Dropdown -->
+    <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary margin-right" id="dropdownBasic" ngbDropdownToggle>
+            {{ valuesService.selectedCollection.name }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic" class="dropdown-menu">
+        <button *ngFor="let item of valuesService.collections" class="dropdown-item" 
+                [class.active]="item === valuesService.selectedCollection" 
+                (click)="onSelect(item)">
+            {{ item.name }}
+        </button>
+
+        <div class="dropdown-divider"></div>
+        <button ngbDropdownItem (click)="addCollection()" class="dropdown-item-addnew">New collection</button>
+        </div>
+    </div>
+  
+    <!-- Edit collection name button -->
+    <button *ngIf="!service.isEditingCollectionName" type="button" 
+        [ngClass]="{
+        'btn btn-sm btn-outline-secondary margin-right': true
+        }"(click)="onEditCollectionName()">
+        <i class="bi bi-pencil"></i>
+    </button>  
+  
+    <!-- Collection name input field -->
+    <input *ngIf="service.isEditingCollectionName" type="text" #valueInputAnswer class="form-control form-control-sm d-inline-block margin-right" [(ngModel)]="currentCollectionName" placeholder="Answer" (keydown.enter)="onEnterKeydown()" (keydown.escape)="onEscapeKeydown()" />
+
+    <!-- Save and cancel buttons -->
+    <button *ngIf="service.isEditingCollectionName" type="button" 
+        [ngClass]="{
+        'btn btn-sm btn-success margin-right': true
+        }"(click)="onEditCollectionNameSave()">
+        <i class="bi bi-check"></i>
+    </button>
+    <button *ngIf="service.isEditingCollectionName" type="button" 
+        [ngClass]="{
+        'btn btn-sm btn-danger margin-right': true
+        }"(click)="onEditCollectionNameCancel()">
+        <i class="bi bi-x"></i>
+    </button>
+
+    <!-- Delete button -->
+    <button type="button" 
+        [ngClass]="{
+        'btn btn-sm btn-outline-danger': true,
+        'disabled': deleteDisabled
+        }"(click)="onDeleteCurrent()">
+        <i class="bi bi-trash"></i>
+    </button>
+</div>
