@@ -35,6 +35,8 @@ export class ValuesService {
             this.changeSelectedCollection(this.addEmptyCollection());
             this.saveCollections();
         }
+
+        this.loadSelectedCollection();
     }
 
     public onSelectedCollectionChange = this.onSelectedCollectionChangeSource.asObservable();
@@ -51,6 +53,19 @@ export class ValuesService {
         return this.collections.length > 0;
     }
 
+    public saveSelectedCollection(): void {
+        localStorage.setItem("selectedCollectionId", this.selectedCollectionId.toString());
+    }
+    public loadSelectedCollection(): void {
+        const selectedCollectionIdString = localStorage.getItem("selectedCollectionId");
+        if (selectedCollectionIdString !== null) {
+            this.selectedCollectionId = parseInt(selectedCollectionIdString);
+        }
+        else {
+            this.selectedCollectionId = this.collections[0].id!;
+        }
+    }
+
     public changeSelectedCollection(collection:Collection): void {
         if (collection.id === undefined) {
             throw new Error("Collection must have an id");
@@ -58,6 +73,8 @@ export class ValuesService {
 
         this.selectedCollectionId = collection.id;
         this.onSelectedCollectionChangeSource.next();
+
+        this.saveSelectedCollection();
     }
 
     public addEmptyCollection():Collection {
