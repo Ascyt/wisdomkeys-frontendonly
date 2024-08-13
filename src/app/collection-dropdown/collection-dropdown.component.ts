@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { CollectionDropdownService } from './collection-dropdown-service';
 import { PracticeComponent } from '../practice/practice.component';
 import { Router } from '@angular/router';
-import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-collection-dropdown',
@@ -24,7 +23,7 @@ export class CollectionDropdownComponent {
 
   public currentCollectionName:string = "";
 
-  public constructor(public valuesService: ValuesService, public service: CollectionDropdownService, private router:Router, private backendService:BackendService) { }
+  public constructor(public valuesService: ValuesService, public service: CollectionDropdownService, private router:Router) { }
 
   onEditCollectionName() {
     this.service.isEditingCollectionName = true;
@@ -40,7 +39,7 @@ export class CollectionDropdownComponent {
     this.service.isEditingCollectionName = false;
     this.valuesService.selectedCollection.name = this.currentCollectionName;
 
-    this.backendService.updateCollection(this.valuesService.selectedCollection);
+    this.valuesService.saveCollections();
   }
   
   onEditCollectionNameCancel() {
@@ -69,13 +68,13 @@ export class CollectionDropdownComponent {
   onDeleteCurrent() {
     this.onEditCollectionNameCancel();
 
-    this.valuesService.removeCollection(this.valuesService.selectedCollection, this.backendService);
+    this.valuesService.removeCollection(this.valuesService.selectedCollection);
   }
 
   addCollection() {
     this.onEditCollectionNameCancel();
 
-    const collection:Collection = this.valuesService.addEmptyCollection(this.backendService);
+    const collection:Collection = this.valuesService.addEmptyCollection();
 
     //this.onSelect(collection);
   }

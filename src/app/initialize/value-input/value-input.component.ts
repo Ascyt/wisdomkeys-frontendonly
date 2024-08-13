@@ -2,7 +2,6 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { ValuesService, Value } from '../../values.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BackendService } from '../../backend.service';
 
 @Component({
   selector: 'app-value-input',
@@ -19,12 +18,12 @@ export class ValueInputComponent {
   @Output() public greyedOutDisabled = new EventEmitter();
   @ViewChild('valueInput', { static: false }) valueInput!: ElementRef;
 
-  constructor(private valuesService: ValuesService, private backendService:BackendService) { }
+  constructor(private valuesService: ValuesService) { }
 
   public onDelete(): void {
     this.valuesService.selectedCollection.values.splice(this.valuesService.selectedCollection.values.indexOf(this.value), 1);
 
-    this.backendService.updateCollection(this.valuesService.selectedCollection);
+    this.valuesService.saveCollections();
   }
 
   public focus(): void {
@@ -58,6 +57,6 @@ export class ValueInputComponent {
   }
 
   public onOutOfFocus(): void {
-    this.backendService.updateCollection(this.valuesService.selectedCollection);
+    this.valuesService.saveCollections();
   }
 }

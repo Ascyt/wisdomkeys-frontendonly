@@ -1,15 +1,14 @@
 import { Component, HostListener, EventEmitter, Output, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValuesService, Value } from '../values.service';
-import { ValueInputComponent } from './value-input/value-input.component';
 import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollectionDropdownService } from '../collection-dropdown/collection-dropdown-service';
-import { BackendService } from '../backend.service';
+import { ValueInputComponent } from './value-input/value-input.component';
 
 @Component({
   selector: 'app-initialize',
   standalone: true,
-  imports: [CommonModule, ValueInputComponent, NgbModule],
+  imports: [CommonModule, NgbModule, ValueInputComponent],
   templateUrl: './initialize.component.html',
   styleUrl: './initialize.component.scss'
 })
@@ -24,7 +23,7 @@ export class InitializeComponent {
     return this.valuesService.selectedCollection.values.slice(0, -1);
   }
 
-  constructor(public valuesService: ValuesService, public collectionDropdownService: CollectionDropdownService, private backendService:BackendService) {
+  constructor(public valuesService: ValuesService, public collectionDropdownService: CollectionDropdownService) {
   }
 
   public addValue(event:KeyboardEvent|undefined = undefined): void {
@@ -122,7 +121,7 @@ export class InitializeComponent {
           this.valuesService.selectedCollection.values = values;
           this.valuesService.selectedCollection.values.push(this.valuesService.getNewValue());
 
-          this.backendService.updateCollection(this.valuesService.selectedCollection);
+          this.valuesService.saveCollections();
         }
         else {
           console.error('Invalid JSON file');

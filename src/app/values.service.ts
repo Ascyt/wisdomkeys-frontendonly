@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { BackendService } from "./backend.service";
 
 export interface Collection {
-    id?: number;
+    id: number;
     name: string;
     values: Value[];
     wordsCorrect:number;
@@ -31,10 +30,25 @@ export class ValuesService {
     private onSelectedCollectionChangeSource = new Subject<void>();
 
     constructor() {
-        this.changeSelectedCollection(this.addEmptyCollection(undefined));
+        if (!this.loadCollections()) {
+            this.changeSelectedCollection(this.addEmptyCollection());
+            this.saveCollections();
+        }
     }
 
     public onSelectedCollectionChange = this.onSelectedCollectionChangeSource.asObservable();
+
+    public saveCollections(): void {
+        localStorage.setItem("collections", JSON.stringify(this.collections));
+    }
+    public loadCollections(): boolean {
+        const collectionsString = localStorage.getItem("collections");
+        if (collectionsString !== null) {
+            this.collections = JSON.parse(collectionsString);
+        }
+
+        return this.collections.length > 0;
+    }
 
     public changeSelectedCollection(collection:Collection): void {
         if (collection.id === undefined) {
@@ -45,33 +59,30 @@ export class ValuesService {
         this.onSelectedCollectionChangeSource.next();
     }
 
-    public addEmptyCollection(backendService:BackendService|undefined):Collection {
+    public addEmptyCollection():Collection {
         const newCollection:Collection = {
             name: `Collection ${this.collections.length + 1}`, 
             values: [this.getNewValue()],
             wordsCorrect: 0,
             avgWpm: undefined,
-            bestWpm: undefined
+            bestWpm: undefined,
+            id: this.collections.length
         };
 
-        if (backendService === undefined || !backendService.isLoggedIn) {
-            newCollection.id = this.collections.length;
-        }
-        else {
-            backendService.addCollection(newCollection);
-        }
-
         this.collections.push(newCollection);
+
+        this.saveCollections();
+
         return newCollection;
     }
 
-    public removeCollection(collection: Collection, backendService:BackendService): void {
+    public removeCollection(collection: Collection): void {
         this.collections = this.collections.filter(c => c !== collection);
         if (this.selectedCollectionId === collection.id) {
             this.selectedCollectionId = this.collections[0].id!;
         }
 
-        backendService.removeCollection(collection);
+        this.saveCollections();
     }
 
     public getNewValue(): Value {
@@ -102,7 +113,7 @@ export class ValuesService {
         return words / minutes;
       }
     
-    public updateWpm(answerLength:number, elapsedTime:number, backendService:BackendService):void {
+    public updateWpm(answerLength:number, elapsedTime:number):void {
         let wpm:number = this.getWpm(answerLength, elapsedTime);
 
         if (this.selectedCollection.avgWpm === undefined) {
@@ -118,14 +129,14 @@ export class ValuesService {
         this.selectedCollection.bestWpm = wpm;
         }
 
-        backendService.updateCollection(this.selectedCollection);
+        this.saveCollections();
     }
     
-    public resetHistory(backendService:BackendService):void {
+    public resetHistory():void {
         this.selectedCollection.wordsCorrect = 0;
         this.selectedCollection.avgWpm = 0;
         this.selectedCollection.bestWpm = 0;
 
-        backendService.updateCollection(this.selectedCollection);
+        this.saveCollections();
     }
 }

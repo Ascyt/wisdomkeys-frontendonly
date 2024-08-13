@@ -1,13 +1,8 @@
 <nav class="navbar navbar-expand-md">
   <div class="container-fluid">
-    <div style="margin-left: 0.5rem">
-      <a *ngIf="backendService.isLoggedIn" class="navbar-brand" routerLink="/account">
-        <img class="logo d-inline-block align-text-top" src="assets/images/user.png" alt="Logged in" />
-      </a>
-      <a *ngIf="!backendService.isLoggedIn" class="navbar-brand" routerLink="/login">
-        <img class="logo d-inline-block align-text-top" src="assets/images/nouser.png" alt="Not logged in" />
-      </a>
-    </div>
+    <a class="navbar-brand" href="/home">
+      <img class="logo d-inline-block align-text-top" src="assets/images/logo.png" alt="Logo" />
+    </a>
     <app-collection-dropdown class="m-2"></app-collection-dropdown>
     <button class="navbar-toggler" [ngClass]="themeSwitcher.isLightTheme ? 'dark' : 'light'" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarNav">
       <span class="navbar-toggler-icon"></span>
