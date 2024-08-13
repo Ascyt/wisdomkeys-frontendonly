@@ -8,6 +8,7 @@ export interface Collection {
     wordsCorrect:number;
     avgWpm:number|undefined;
     bestWpm:number|undefined;
+    spaceToSubmit:boolean;
 }
 
 export interface Value { 
@@ -60,13 +61,29 @@ export class ValuesService {
     }
 
     public addEmptyCollection():Collection {
+        let collectionName:string = `Collection ${this.collections.length + 1}`;
+        let i = 1;
+        while (this.collections.find(c => c.name === collectionName)) {
+            collectionName = `Collection ${this.collections.length + 1 + i}`;
+            i++;
+        }
+
+        let collectionId:number = 0;
+        // Set collectionId to the highest id + 1
+        for (const collection of this.collections) {
+            if (collection.id >= collectionId) {
+                collectionId = collection.id! + 1;
+            }
+        }
+
         const newCollection:Collection = {
-            name: `Collection ${this.collections.length + 1}`, 
+            name: collectionName, 
             values: [this.getNewValue()],
             wordsCorrect: 0,
             avgWpm: undefined,
             bestWpm: undefined,
-            id: this.collections.length
+            id: collectionId,
+            spaceToSubmit: false
         };
 
         this.collections.push(newCollection);
@@ -91,8 +108,6 @@ export class ValuesService {
 
     public getRandomValue(): Value {
         const value = this.selectedCollection.values[Math.floor(Math.random() * (this.selectedCollection.values.length - 1))];
-        console.log(value);
-        console.log(this.selectedCollection.values)
         return value;
     }
 

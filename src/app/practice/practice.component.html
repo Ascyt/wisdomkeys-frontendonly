@@ -41,7 +41,7 @@
 
     <!-- Space to submit -->
     <div class="custom-control custom-switch">
-        <input type="checkbox" [disabled]="!valuesService.allowSpaceToSubmit()" class="custom-control-input" id="spaceToSubmitSwitch" [(ngModel)]="spaceToSubmit">
+        <input type="checkbox" [disabled]="!valuesService.allowSpaceToSubmit()" class="custom-control-input" id="spaceToSubmitSwitch" (change)="setSpaceToSubmit($event)" [(ngModel)]="valuesService.selectedCollection.spaceToSubmit">
         <label class="custom-control-label m-1" for="spaceToSubmitSwitch">Space To Submit</label>
     </div> 
 

@@ -76,6 +76,6 @@ export class CollectionDropdownComponent {
 
     const collection:Collection = this.valuesService.addEmptyCollection();
 
-    //this.onSelect(collection);
+    this.onSelect(collection);
   }
 }

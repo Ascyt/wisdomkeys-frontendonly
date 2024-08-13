@@ -18,8 +18,6 @@ export class PracticeComponent {
 
   public isViewingAnswer:boolean = false;
 
-  public spaceToSubmit:boolean = false;
-
   public stopwatchRunning:boolean = false;
   private elapsedTime: number = 0;
   private startTime: number = 0;
@@ -45,7 +43,7 @@ export class PracticeComponent {
   }
 
   public get actualSpaceToSubmit():boolean {
-    return this.spaceToSubmit && this.valuesService.allowSpaceToSubmit();
+    return this.valuesService.selectedCollection.spaceToSubmit && this.valuesService.allowSpaceToSubmit();
   }
 
   public nextValue():void {
@@ -177,6 +175,12 @@ export class PracticeComponent {
   toggleSpaceToSubmitKey($event:KeyboardEvent):void {
     $event.preventDefault();
 
-    this.spaceToSubmit = !this.spaceToSubmit;
+    this.valuesService.selectedCollection.spaceToSubmit = !this.valuesService.selectedCollection.spaceToSubmit;
+    this.valuesService.saveCollections();
+  }
+
+  setSpaceToSubmit(event:Event):void {
+    this.valuesService.selectedCollection.spaceToSubmit = (event.target as HTMLInputElement).checked;
+    this.valuesService.saveCollections();
   }
 }
