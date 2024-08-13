@@ -23,7 +23,8 @@ export class AppComponent {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event:KeyboardEvent):void {
-    return; // Navigation is disabled because otherwise it would interfere with the input fields
+    if (!event.ctrlKey) 
+      return;
 
     const routeIndex = this.cycleRoutes.indexOf(this.router.url.split('/')[1]);
     if (routeIndex === -1) 

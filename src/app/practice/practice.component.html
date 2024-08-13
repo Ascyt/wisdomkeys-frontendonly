@@ -3,7 +3,7 @@
     <p>{{currentValue?.question}}</p>
 
     <!-- Answer input field -->
-    <input type="text" class="form-control" [(ngModel)]="currentValueAnswer" placeholder="Answer" (keydown.enter)="onEnterKeydown()" (input)="onInputChange()" />
+    <input #inputField type="text" class="form-control" [(ngModel)]="currentValueAnswer" placeholder="Answer" (keydown.enter)="onEnterKeydown()" (input)="onInputChange()" />
 
     <!-- View answer button -->
     <button type="button" [ngClass]="{'btn btn-sm m-2':true, 'btn-outline-info':!isViewingAnswer, 'btn-info':isViewingAnswer}" (click)="toggleViewAnswer()">
@@ -64,4 +64,5 @@
     <li><span class="key">Ctrl</span> + <span class="key">H</span>: <span class="description">Toggle view answer</span></li>
     <li><span class="key">Ctrl</span> + <span class="key">R</span>: <span class="description">Next value</span></li>
     <li><span class="key">Ctrl</span> + <span class="key">Space</span>: <span class="description">Toggle Space To Submit</span></li>
+    <li><i>Typing any letter auto-focuses the input field.</i></li>
 </ul>

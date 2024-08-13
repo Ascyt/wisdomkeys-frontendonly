@@ -1,4 +1,4 @@
-import { Component, HostListener, Injectable, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Injectable, Renderer2, ViewChild } from '@angular/core';
 import { Value, ValuesService } from '../values.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,8 @@ export class PracticeComponent {
 
   private onSelectedCollectionChangeSubscription:Subscription|undefined = undefined;
 
+  @ViewChild('inputField') inputField!: ElementRef;
+
   constructor(public valuesService: ValuesService, private renderer: Renderer2) {
     if (valuesService.selectedCollection.values.length > 0) {
       this.nextValue();
@@ -50,6 +52,15 @@ export class PracticeComponent {
     this.currentValue = this.valuesService.getRandomValue();
     
     this.reset();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  focusInput(event:KeyboardEvent):void {
+    if (event.key.length !== 1 || ((event.key < 'a' || event.key > 'z') && (event.key < 'A' || event.key > 'Z'))) {
+      return;
+    }
+
+    this.inputField.nativeElement.focus();
   }
   
   @HostListener('document:keydown.control.r', ['$event'])
